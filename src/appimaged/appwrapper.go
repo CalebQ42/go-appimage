@@ -61,7 +61,7 @@ func appwrap() {
 				// If what we launched (and failed) was an AppImage, then use its nice (short) name
 				// to display the error message
 				var appname string
-				ai, err := NewAppImage(os.Args[2])
+				ai, err = NewAppImage(os.Args[2])
 				if err == nil {
 					appname = ai.Name
 				} else {

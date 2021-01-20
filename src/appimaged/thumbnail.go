@@ -33,7 +33,7 @@ func (ai AppImage) extractDirIconAsThumbnail() {
 	// https://specifications.freedesktop.org/thumbnail-spec/thumbnail-spec-latest.html#MODIFICATIONS
 
 	//this will try to extract the thumbnail, or goes back to command based extraction if it fails.
-	var buf *bytes.Buffer
+	buf := new(bytes.Buffer)
 	var data []byte
 	dirIconRdr, err := ai.Thumbnail()
 	if err != nil {

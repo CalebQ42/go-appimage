@@ -54,11 +54,7 @@ func NewAppImage(path string) (ai *AppImage, err error) {
 	ai.desktopfilename = "appimagekit_" + ai.md5 + ".desktop"
 	ai.desktopfilepath = xdg.DataHome + "/applications/" + "appimagekit_" + ai.md5 + ".desktop"
 	ai.thumbnailfilename = ai.md5 + ".png"
-	if strings.HasSuffix(ThumbnailsDirNormal, "/") {
-		ai.thumbnailfilepath = ThumbnailsDirNormal + ai.thumbnailfilename
-	} else {
-		ai.thumbnailfilepath = ThumbnailsDirNormal + "/" + ai.thumbnailfilename
-	}
+	ai.thumbnailfilepath = filepath.Clean(ThumbnailsDirNormal) + "/" + ai.thumbnailfilename
 	ui, err := ai.ReadUpdateInformation()
 	if err == nil && ui != "" {
 		ai.updateinformation = ui
@@ -73,18 +69,6 @@ func (ai AppImage) calculateMD5filenamepart() string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
-// func (ai AppImage) calculateNiceName() string {
-// 	niceName := filepath.Base(ai.Path())
-// 	niceName = strings.Replace(niceName, ".AppImage", "", -1)
-// 	niceName = strings.Replace(niceName, ".appimage", "", -1)
-// 	niceName = strings.Replace(niceName, "-x86_64", "", -1)
-// 	niceName = strings.Replace(niceName, "-i386", "", -1)
-// 	niceName = strings.Replace(niceName, "-i686", "", -1)
-// 	niceName = strings.Replace(niceName, "-", " ", -1)
-// 	niceName = strings.Replace(niceName, "_", " ", -1)
-// 	return niceName
-// }
-
 func runCommand(cmd *exec.Cmd) (bytes.Buffer, error) {
 	if *verbosePtr == true {
 		log.Printf("runCommand: %q\n", cmd)
@@ -98,7 +82,6 @@ func runCommand(cmd *exec.Cmd) (bytes.Buffer, error) {
 }
 
 func (ai AppImage) setExecBit() {
-
 	err := os.Chmod(ai.Path, 0755)
 	if err == nil {
 		if *verbosePtr == true {
