@@ -37,15 +37,15 @@ fi
 # Get pinned version of Go directly from upstream
 if [ "aarch64" == "$TRAVIS_ARCH" ] ; then export ARCH=arm64 ; fi
 if [ "amd64" == "$TRAVIS_ARCH" ] ; then export ARCH=amd64 ; fi
-wget -c -nv https://dl.google.com/go/go1.15.7.linux-$ARCH.tar.gz
+wget -c -nv https://dl.google.com/go/go1.16rc1.linux-$ARCH.tar.gz
 mkdir path || true
 tar -C $PWD/path -xzf go*.tar.gz
 export PATH=$PWD/path/go/bin:$PATH
 
 # Get dependencies needed for CGo # FIXME: Get rid of the need for CGo and, in return, those dependencies
-sudo apt-get -q update
-if [ $(go env GOHOSTARCH) == "amd64" ] ; then sudo apt-get -y install gcc-multilib autoconf ; fi
-if [ $(go env GOHOSTARCH) == "arm64" ] ; then sudo apt-get -y install gcc-arm-linux-gnueabi autoconf ; fi
+# sudo apt-get -q update
+# if [ $(go env GOHOSTARCH) == "amd64" ] ; then sudo apt-get -y install gcc-multilib autoconf ; fi
+# if [ $(go env GOHOSTARCH) == "arm64" ] ; then sudo apt-get -y install gcc-arm-linux-gnueabi autoconf ; fi
 
 ##############################################################
 # Build appimagetool and appimaged
@@ -161,14 +161,14 @@ chmod +x appimagetool.AppDir/usr/bin/*
 # 32-bit
 if [ $(go env GOHOSTARCH) == "amd64" ] ; then 
   USEARCH=386
-  sudo dpkg --add-architecture i386
-  sudo apt-get update
-  sudo apt-get install libc6:i386 zlib1g:i386 libfuse2:i386
+  # sudo dpkg --add-architecture i386
+  # sudo apt-get update
+  # sudo apt-get install libc6:i386 zlib1g:i386 libfuse2:i386
 elif [ $(go env GOHOSTARCH) == "arm64" ] ; then
   USEARCH=arm
-  sudo dpkg --add-architecture armhf
-  sudo apt-get update
-  sudo apt-get install libc6:armhf zlib1g:armhf zlib1g-dev:armhf libfuse2:armhf libc6-armel:armhf
+  # sudo dpkg --add-architecture armhf
+  # sudo apt-get update
+  # sudo apt-get install libc6:armhf zlib1g:armhf zlib1g-dev:armhf libfuse2:armhf libc6-armel:armhf
 fi
 
 cp appimagetool-$USEARCH appimagetool.AppDir/usr/bin/appimagetool

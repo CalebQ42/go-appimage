@@ -50,11 +50,6 @@ func (ai AppImage) extractDirIconAsThumbnail() {
 	if err != nil {
 		helpers.LogError("thumbnail", err)
 	}
-	//TODO: I could probably dump it directly to the buffer below
-	// if err != nil {
-	// Too verbose
-	// sendErrorDesktopNotification(ai.niceName+" may be defective", "Could not read .DirIcon")
-	// }
 genericIcon:
 	if buf.Len() == 0 {
 		if *verbosePtr == true {
